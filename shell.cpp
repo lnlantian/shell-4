@@ -1,11 +1,12 @@
 #include <iostream>
+#include <cstdio>
 #include <cstring>
 #include <cassert>
 #include <string>
 #include <unistd.h> 
 #include <sys/wait.h>
 
-#define TEST
+#define DEBUG
 
 /*
  * features:
@@ -19,20 +20,25 @@
  *  assume that items are separeted by space
  */
 
-const std::string kBinDirectories[] = { "/bin/",
-                                        "/usr/bin/",
-                                        "/usr/local/bin/" };
-
+/*
+ * remove whitespace from command
+ */
 void clear_line(std::string& line)
 {
-  while (line[0] == ' ') {
+  while ((line[0] == ' ') || (line[0] == '\n')) {
     line.erase(0, 1);
   }
-  while (line[line.size() - 1] == ' ') {
+  while ((line[line.size() - 1] == ' ') || (line[line.size() - 1] == '\n')) {
     line.erase(line.size() - 1, 1);
   }
 }
 
+/*
+ * Split line into command string and parameters array
+ * for execvp function.
+ * execvp finds automatically path to command when
+ * first element in parameters is command name.
+ */
 void strip_line(std::string line,
                 std::string& command,
                 char** parameters,
@@ -40,23 +46,31 @@ void strip_line(std::string line,
 {
   int split_index = line.find(' ');
   param_number = 0;
-  command = kBinDirectories[0];
   if (split_index == int(std::string::npos)) {
     command += line;
   } else {
     command += line.substr(0, split_index);  
     int i = 0;
-    // number of elements in array parameters
+    /* number of elements in array parameters */
     int i_max = sizeof (parameters) / sizeof (*parameters);
-    line = line.substr(split_index + 1);
     while (!line.empty() && i < i_max) {
       split_index = line.find(' ');
-      // setting parameters
+      /* setting parameters */
       strcpy(parameters[i], line.substr(0, split_index).c_str());
+      line = line.substr(split_index + 1);
       ++i;
     }
+    strcpy(parameters[i], line.c_str());
     param_number = i;
   }
+#ifdef DEBUG
+  std::cerr << "parameters: ";
+  for (int i = 0; i <= param_number; ++i) {
+    std::string param(parameters[i]);
+    std::cerr << param << ' ';
+  }
+  std::cerr << "\n";
+#endif
 }
 
 std::string get_username()
@@ -113,7 +127,7 @@ int main(int argc, char *argv[])
       }
       strip_line(line, command, parameters, param_number);
 #ifdef DEBUG
-      std::err << "param_number = " << param_number << std::endl;
+      std::cerr << "param_number = " << param_number << std::endl;
 #endif
       /* parameters list should be ended by NULL */
       parameters[param_number + 1] = NULL;
