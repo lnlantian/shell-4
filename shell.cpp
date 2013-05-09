@@ -1,15 +1,18 @@
 #include <iostream>
 #include <cstdio>
+#include <vector>
 #include <cstring>
 #include <cassert>
 #include <string>
 #include <unistd.h> 
 #include <sys/wait.h>
 
-#define DEBUG
+#define NDEBUG
 
 /*
  * features:
+ *  [x] username
+ *  [x] current working directory
  *  machine name
  *  relative and absolute path
  *  STDOUT and STDIN rediretion
@@ -19,6 +22,8 @@
  *  ...kill(pid, SIGKILL)
  *  assume that items are separeted by space
  */
+
+std::vector<std::string> history;
 
 /*
  * remove whitespace from command
@@ -65,7 +70,7 @@ void strip_line(std::string line,
   }
 #ifdef DEBUG
   std::cerr << "parameters: ";
-  for (int i = 0; i <= param_number; ++i) {
+  for (int i = 1; i <= param_number; ++i) {
     std::string param(parameters[i]);
     std::cerr << param << ' ';
   }
@@ -79,7 +84,7 @@ std::string get_username()
   if (cusername != NULL) {
     return std::string(cusername); 
   } else {
-    return std::string("none");
+    return std::string("unknown");
   }
 }
 
@@ -89,27 +94,70 @@ std::string get_cwd() // current working directory
   if (cwd != NULL) {
     return std::string(cwd); 
   } else {
-    return std::string("none");
+    return std::string("unknown");
   }
+}
+
+std::string get_hostname()
+{
+  char hostname[100];
+  if (!gethostname(hostname, 100)) {
+    return std::string(hostname);
+  } else {
+    return std::string("unknown");
+  }
+}
+
+void show_history(void)
+{
+  return;
+}
+
+/*
+ * built-in functions
+ * TODO:
+ *  add chdir
+ *  add jobs
+ *  add help
+ */
+int check_builtin(std::string line)
+{
+  int space_index = 0;
+  if ((space_index = line.find(' ')) != int(std::string::npos)) { /* !!! */
+    std::string cmd = line.substr(0, space_index);
+  }
+  if (line == "exit") {
+    return 0;
+  } else if (line == "cd") {
+
+  } else if (line == "history") {
+    show_history();
+  } else if (line == "jobs") {
+
+  } else if (line == "help") {
+    // builtin_help();
+  }
+  return -1;
 }
 
 /*
  * main and tests
  */
-
-std::string working_directory = get_cwd();
-
 int main(int argc, char *argv[])
 {
   while (true) {
-    std::string prompt = get_username() + '@' + get_cwd() + " $ ";
+    std::string prompt = get_hostname() + ' ' + 
+                         get_username() + '@' + 
+                         get_cwd() + " $ ";
     std::cout << prompt;
     std::string line;
-    getline(std::cin, line); // read command and parameters
+    getline(std::cin, line); /* read command and parameters */
     clear_line(line);
-    if (line == "exit")
+    
+    int result = check_builtin(line);
+    if (!result) /* exit here! */
       break;
-    pid_t pid = fork();          // pid of child process from fork
+    pid_t pid = fork(); /* pid of child process */
     if (pid != 0) { /* code of parent process */
       int status = 0;
       waitpid(pid, &status, 0);
@@ -133,7 +181,7 @@ int main(int argc, char *argv[])
       parameters[param_number + 1] = NULL;
       /* command execution */
 #ifdef DEBUG
-      std::cout << command << std::endl;
+      std::cout << "command name: " << command << std::endl;
 #endif
       execvp(command.c_str(), parameters);
       for (int i = 0; i < kparam_size; ++i) {
