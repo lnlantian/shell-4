@@ -2,3 +2,6 @@ Author: lukequaint
 
 Simple shell project - exercise from book
 "Modern Operating Systems", Andrew S.Tanenbaum
+
+Include:
+  - username, hostname and current working directory check,
