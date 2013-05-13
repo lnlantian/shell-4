@@ -31,6 +31,7 @@ extern std::vector<std::pair<unsigned long long, std::string> > history;
 
 int main(int argc, char *argv[])
 {
+  load_history();
   while (true) {
     std::string prompt = get_hostname() + ' ' + 
                          get_username() + '@' + 
@@ -78,5 +79,6 @@ int main(int argc, char *argv[])
       }
     }
   }
+  save_history();
   return 0;
 }

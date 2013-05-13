@@ -7,6 +7,8 @@
 #include <vector>
 #include <utility>
 #include <iomanip>
+#include <sstream>
+#include <fstream>
 
 /*
  * built-in functions
@@ -18,7 +20,7 @@
  *  help
  */
 
-const int kSavedCommands = 3;
+const int kSavedCommands = 25;
 const std::string kHistoryFilename = "history.txt";
 
 /*
@@ -35,7 +37,7 @@ void clear_history(void);
 /*
  * display queue of old commands 
  */
-void show_history(void);
+void show_history(std::ostream& out);
 
 /*
  * read from file and write history into file
