@@ -30,13 +30,15 @@ void show_history(std::ofstream& out)
 
 void load_history(void)
 {
-
+  std::ifstream in(history_filename);
+  int number = 0;
+  // here!!!
 }
 
 void save_history(void)
 {
   std::ofstream out(history_filename);
-  show_history(out); // !!! here 
+  show_history(out);
 }
 
 void builtin_help(void)
