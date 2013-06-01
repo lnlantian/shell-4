@@ -13,7 +13,6 @@
 /*
  * built-in functions
  * TODO:
- *  cd
  *  history | !number - execute [number] command from history
  *            -1 for previous
  *  jobs
@@ -23,35 +22,40 @@
 const int kSavedCommands = 25;
 const std::string kHistoryFilename = "history.txt";
 
-/*
- * return number of command and increment counter
- */
+/* return number of command and increment counter */
 unsigned long long new_command(void);
+
+/* delete saved commands*/
+void clear_history(void);
 
 /*
  * cut history vector size to kSavedCommands
  * while it's too big (queue??)
  */
-void clear_history(void);
+void cut_history(void);
 
-/*
- * display queue of old commands 
- */
+/* display queue of old commands */
 void show_history(std::ostream& out);
 
-/*
- * read from file and write history into file
- */
+/* read from file and write history into file */
 void load_history(void); 
 void save_history(void);
 
+/* ********************************* */
+
+int change_directory(std::string path);
+
+/* ********************************* */
+
+
+/* display list of builtins */
 void builtin_help(void);
 
 /*
  * check if command is built-in:
  *  * exit
  *  * history
- *  * # cd
+ *  * cd
  *  * # jobs
  * return code which is:
  *  0 for 'exit'
@@ -60,4 +64,4 @@ void builtin_help(void);
  */
 int check_builtin(std::string line);
 
-#endif
+#endif /* BUILTIN_H_ */

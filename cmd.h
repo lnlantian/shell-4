@@ -4,9 +4,7 @@
 #include <cstring>
 #include <string>
 
-/*
- * remove whitespace from command
- */
+/* remove whitespace from command */
 void clear_line(std::string& line);
 
 /*

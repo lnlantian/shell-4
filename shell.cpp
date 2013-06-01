@@ -33,6 +33,7 @@ int main(int argc, char *argv[])
 {
   load_history();
   while (true) {
+    //std::string prompt = " $ ";
     std::string prompt = get_hostname() + ' ' + 
                          get_username() + '@' + 
                          get_cwd() + " $ ";

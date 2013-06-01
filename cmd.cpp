@@ -20,6 +20,7 @@ void strip_line(std::string line,
   if (split_index == int(std::string::npos)) {
     command += line;
   } else {
+    /* main command */
     command += line.substr(0, split_index);  
     int i = 0;
     /* number of elements in array parameters */
@@ -35,6 +36,7 @@ void strip_line(std::string line,
     param_number = i;
   }
 #ifdef DEBUG
+  /* print parameters list */
   std::cerr << "parameters: ";
   for (int i = 1; i <= param_number; ++i) {
     std::string param(parameters[i]);
