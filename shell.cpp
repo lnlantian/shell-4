@@ -1,3 +1,24 @@
+/*
+ * Author:
+ *  Lukasz Hryniuk "lukequaint"
+ *  lukequaint@gmail.com
+ *
+ * features:
+ *  [x] username
+ *  [x] current working directory
+ *  [x] machine name
+ *  [x] history of commands
+ *  [x] relative and absolute path
+ *  [ ] pipes
+ *  [ ] STDOUT and STDIN rediretion
+ *  [ ] placing commands in background
+ *    support for: 
+ *  [x] cd
+ *  [x] history
+ *  [ ] jobs, 
+ *  [x] exit
+ *  [ ] kill(pid, SIGKILL)
+ */
 
 #include <unistd.h> 
 #include <sys/wait.h>
@@ -8,75 +29,60 @@
 #include <cassert>
 #include <string>
 
-#define NDEBUG
+#define DEBUG
 #include "cmd.h"
 #include "host.h"
 #include "builtin.h"
 
 extern std::vector<std::pair<unsigned long long, std::string> > history;
 
-/*
- * features:
- *  [x] username
- *  [x] current working directory
- *  machine name
- *  relative and absolute path
- *  STDOUT and STDIN rediretion
- *  placing commands in background
- *  history of commands
- *  support for jobs, cd, history, exit, 
- *  ...kill(pid, SIGKILL)
- *  assume that items are separeted by space
- */
+/* for pipes
+ * const int PIPE_READ = 0;
+ * const int PIPE_WRITE = 1;
+ * int fildes[2] = { 0, 0 }; *
+ * */
 
 int main(int argc, char *argv[])
 {
-  load_history();
+  load_history(); /* from file history.txt */
   while (true) {
-    //std::string prompt = " $ ";
-    std::string prompt = get_hostname() + ' ' + 
-                         get_username() + '@' + 
-                         get_cwd() + " $ ";
+    std::string prompt = "$ ";
+    //std::string prompt = get_hostname() + ' ' + 
+                         //get_username() + '@' + 
+                         //get_cwd() + " $ ";
     std::cout << prompt;
     std::string line;
     getline(std::cin, line); /* read command and parameters */
+    clear_line(line); /* remove surrounding whitespaces */
     history.push_back(make_pair(new_command(), line));
-    clear_line(line);
-    int result = check_builtin(line);
+    int result = check_builtin(line); /* TODO: pipes with builtins (?) */
     if (result == 0) { /* exit here! */
       break;
     } else if (result == -1) {
+      
       pid_t pid = fork(); /* pid of child process */
-      if (pid != 0) { /* code of parent process */
+
+      /* code of parent process */
+      if (pid != 0) { 
         int status = 0;
         waitpid(pid, &status, 0);
 #ifdef DEBUG
         std::cerr << "end of child process (" << pid 
           << ") with status " << status << '\n';
 #endif
-      } else { /* code of child process */
-        std::string command;
-        const int kparam_size = line.size(); // size of parameters array
-        int param_number = 0; // real parameters number
-        char** parameters = new char*[kparam_size];
-        for (int i = 0; i < kparam_size; ++i) {
-          parameters[i] = new char[kparam_size];
-        }
-        strip_line(line, command, parameters, param_number);
+      /* code of child process */
+      } else { 
+        /* extracting command and parameters */
+        Command cmd(line);
 #ifdef DEBUG
-        std::cerr << "param_number = " << param_number << std::endl;
+        //std::cerr << "line = " << line << '\n';
+        std::cerr << "cmd.command = " << cmd.command << '.'
+                  << "\ncmd.params_number = " << cmd.params_number << '\n';
+        printf("cmd.cmd = %s.\n", cmd.cmd);
+        printf("cmd.params[0] = %s.\n", cmd.params[0]);
 #endif
-        /* parameters list should be ended by NULL */
-        parameters[param_number + 1] = NULL;
         /* command execution */
-#ifdef DEBUG
-        std::cout << "command name: " << command << std::endl;
-#endif
-        execvp(command.c_str(), parameters);
-        for (int i = 0; i < kparam_size; ++i) {
-          delete[] parameters[i];
-        } 
-        delete[] parameters;
+        execvp(cmd.cmd, cmd.params);
       }
     }
   }

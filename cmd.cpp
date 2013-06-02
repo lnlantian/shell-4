@@ -10,38 +10,61 @@ void clear_line(std::string& line)
   }
 }
 
-void strip_line(std::string line,
-                std::string& command,
-                char** parameters,
-                int& param_number)
+Command::Command(std::string line)
 {
+#ifdef DEBUG
+  std::cerr << "Creating command from line:\n" << line << '\n';
+#endif
+  /* params array init */
+  params_number = 1;
+  params = new char*[kParamSize];
+  for (int i = 0; i < kParamSize; ++i) {
+    params[i] = new char[kParamSize];
+  }
+
   int split_index = line.find(' ');
-  param_number = 0;
+  /* command only */
   if (split_index == int(std::string::npos)) {
     command += line;
+  /* command with parameters */
   } else {
     /* main command */
     command += line.substr(0, split_index);  
-    int i = 0;
-    /* number of elements in array parameters */
-    int i_max = sizeof (parameters) / sizeof (*parameters);
-    while (!line.empty() && i < i_max) {
+    line = line.substr(split_index + 1);
+    int i = 1;
+    std::cerr << line << '.'; 
+    /* setting parameters */
+    while (!line.empty() 
+        && (line.find(' ') != std::string::npos)
+        && i < kParamSize) {
       split_index = line.find(' ');
-      /* setting parameters */
-      strcpy(parameters[i], line.substr(0, split_index).c_str());
+      strcpy(params[i], line.substr(0, split_index).c_str());
       line = line.substr(split_index + 1);
       ++i;
     }
-    strcpy(parameters[i], line.c_str());
-    param_number = i;
+    strcpy(params[i], line.c_str());
+    ++i;
+    params_number = i;
   }
+  strcpy(cmd, command.c_str());
+  strcpy(params[0], cmd); /* with it, execvp will search path
+                           * automatically */
+  params[params_number] = NULL;
 #ifdef DEBUG
   /* print parameters list */
   std::cerr << "parameters: ";
-  for (int i = 1; i <= param_number; ++i) {
-    std::string param(parameters[i]);
-    std::cerr << param << ' ';
+  for (int i = 0; i <  params_number; ++i) {
+    std::string param(params[i]);
+    std::cerr << param << ';';
   }
   std::cerr << "\n";
 #endif
+}
+
+Command::~Command(void)
+{
+  for (int i = 0; i < kParamSize; ++i) {
+    delete[] params[i];
+  }
+  delete[] params;
 }
