@@ -32,7 +32,6 @@ Command::Command(std::string line)
     command += line.substr(0, split_index);  
     line = line.substr(split_index + 1);
     int i = 1;
-    std::cerr << line << '.'; 
     /* setting parameters */
     while (!line.empty() 
         && (line.find(' ') != std::string::npos)
@@ -47,6 +46,7 @@ Command::Command(std::string line)
     params_number = i;
   }
   strcpy(cmd, command.c_str());
+  printf("cmd = %s.\n", cmd);
   strcpy(params[0], cmd); /* with it, execvp will search path
                            * automatically */
   params[params_number] = NULL;
