@@ -15,8 +15,8 @@
  *    support for: 
  *  [x] cd
  *  [x] history
- *  [ ] jobs, 
  *  [x] exit
+ *  [ ] jobs, 
  *  [ ] kill(pid, SIGKILL)
  */
 
@@ -29,18 +29,13 @@
 #include <cassert>
 #include <string>
 
-#define DEBUG
+#define NDEBUG
 #include "cmd.h"
 #include "host.h"
 #include "builtin.h"
+#include "pipes.h"
 
 extern std::vector<std::pair<unsigned long long, std::string> > history;
-
-/* for pipes
- * const int PIPE_READ = 0;
- * const int PIPE_WRITE = 1;
- * int fildes[2] = { 0, 0 }; *
- * */
 
 int main(int argc, char *argv[])
 {
@@ -51,29 +46,36 @@ int main(int argc, char *argv[])
                          //get_username() + '@' + 
                          //get_cwd() + " $ ";
     std::cout << prompt;
-    std::string line;
-    getline(std::cin, line); /* read command and parameters */
-    clear_line(line); /* remove surrounding whitespaces */
-    history.push_back(make_pair(new_command(), line));
-    int result = check_builtin(line); /* TODO: pipes with builtins (?) */
+    std::string command;
+    getline(std::cin, command); /* read command and parameters */
+    clear_line(command); /* remove surrounding whitespaces */
+    history.push_back(make_pair(new_command(), command));
+    int result = check_builtin(command); /* TODO: pipes with builtins (?) */
     if (result == 0) { /* exit here! */
       break;
-    } else if (result == -1) {
-      
+    } else if (result == -1) { /* command is not builtin */
       pid_t pid = fork(); /* pid of child process */
-
       /* code of parent process */
       if (pid != 0) { 
         int status = 0;
         waitpid(pid, &status, 0);
 #ifdef DEBUG
         std::cerr << "end of child process (" << pid 
-          << ") with status " << status << '\n';
+                  << ") with status " << status << '\n';
 #endif
       /* code of child process */
       } else { 
+        /* ########## CRITICAL AREA ##########
+         * ##### std::length_error below ##### */
+        if (command.find('|') != std::string::npos) {
+          std::string line_begin = command.substr(0, command.find('|') - 1);
+          std::string command = command.substr(command.find('|') + 1);
+          make_pipe(line_begin, command);
+        }
+        /* ################################### */
+
         /* extracting command and parameters */
-        Command cmd(line);
+        Command cmd(command);
 #ifdef DEBUG
         //std::cerr << "line = " << line << '\n';
         std::cerr << "cmd.command = " << cmd.command << '.'

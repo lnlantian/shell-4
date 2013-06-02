@@ -6,7 +6,7 @@
 #include <cstring>
 #include <string>
 
-#define DEBUG
+#define NDEBUG
 
 const int kParamSize = 120;
 

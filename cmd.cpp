@@ -15,8 +15,12 @@ Command::Command(std::string line)
 #ifdef DEBUG
   std::cerr << "Creating command from line:\n" << line << '\n';
 #endif
+  clear_line(line);
+  /* c-string init */
+  cmd = new char[kParamSize];
+
   /* params array init */
-  params_number = 1;
+  params_number = 0;
   params = new char*[kParamSize];
   for (int i = 0; i < kParamSize; ++i) {
     params[i] = new char[kParamSize];
@@ -24,40 +28,35 @@ Command::Command(std::string line)
 
   int split_index = line.find(' ');
   /* command only */
-  if (split_index == int(std::string::npos)) {
-    command += line;
+  if (split_index == std::string::npos) {
+    command = line;
+    strcpy(params[0], command.c_str());  
   /* command with parameters */
   } else {
     /* main command */
     command += line.substr(0, split_index);  
-    line = line.substr(split_index + 1);
-    int i = 1;
     /* setting parameters */
     while (!line.empty() 
         && (line.find(' ') != std::string::npos)
-        && i < kParamSize) {
+        && params_number < kParamSize) {
       split_index = line.find(' ');
-      strcpy(params[i], line.substr(0, split_index).c_str());
+      strcpy(params[params_number], line.substr(0, split_index).c_str());
       line = line.substr(split_index + 1);
-      ++i;
+      ++params_number;
     }
-    strcpy(params[i], line.c_str());
-    ++i;
-    params_number = i;
+    strcpy(params[params_number], line.c_str());
   }
   strcpy(cmd, command.c_str());
-  printf("cmd = %s.\n", cmd);
-  strcpy(params[0], cmd); /* with it, execvp will search path
-                           * automatically */
-  params[params_number] = NULL;
+  params[params_number + 1] = NULL;
 #ifdef DEBUG
+  std::cerr << "NULL at index " <<  params_number + 1 << '\n';
   /* print parameters list */
   std::cerr << "parameters: ";
-  for (int i = 0; i <  params_number; ++i) {
+  for (int i = 0; i <=  params_number; ++i) {
     std::string param(params[i]);
     std::cerr << param << ';';
   }
-  std::cerr << "\n";
+  std::cerr << '\n';
 #endif
 }
 
@@ -67,4 +66,7 @@ Command::~Command(void)
     delete[] params[i];
   }
   delete[] params;
+  params = NULL;
+  delete[] cmd;
+  cmd = NULL;
 }
