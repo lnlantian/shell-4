@@ -1,3 +1,7 @@
+/*
+ * author: Lukasz Hryniuk
+ * e-mail: lukequaint@gmail.com
+ * */
 #ifndef CMD_H_
 #define CMD_H_
 

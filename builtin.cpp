@@ -1,3 +1,7 @@
+/*
+ * author: Lukasz Hryniuk
+ * e-mail: lukequaint@gmail.com
+ * */
 #include "builtin.h"
 
 /**  

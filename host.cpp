@@ -1,3 +1,7 @@
+/*
+ * author: Lukasz Hryniuk
+ * e-mail: lukequaint@gmail.com
+ * */
 #include "host.h"
 
 std::string get_username()

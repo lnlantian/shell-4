@@ -1,7 +1,6 @@
 /*
- * Author:
- *  Lukasz Hryniuk "lukequaint"
- *  lukequaint@gmail.com
+ * author: Lukasz Hryniuk
+ * e-mail: lukequaint@gmail.com
  *
  * features:
  *  [x] username
