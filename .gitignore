@@ -1,0 +1,8 @@
+# Temporary and exec #
+#############
+tmp
+
+# Other files #
+##############
+shell
+*.txt

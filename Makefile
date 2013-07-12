@@ -3,6 +3,10 @@ SRC = $(wildcard *.cpp) # mask for source files
 OBJ = $(SRC:.cpp=.o) # object files filenames made from SRC
 NAME = shell # name of executive
 
+all: \
+	shell \
+	clean
+
 # main program
 shell: $(OBJ)
 	g++ -o $(NAME) $(OBJ)
