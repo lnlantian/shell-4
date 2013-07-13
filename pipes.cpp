@@ -19,11 +19,12 @@ void make_pipe(std::string line_begin,
     /* close file descriptors */
     close(fd[PIPE_READ]);
     close(fd[PIPE_WRITE]);
-    if (line_begin.find('|') != std::string::npos) {
-      std::string new_line_begin = line_begin.substr(0, line_begin.find('|') - 1);
-      std::string new_command = line_begin.substr(line_begin.find('|') + 1);
-      make_pipe(new_line_begin, new_command);
-    }
+    /* more pipes? */
+    //if (line_begin.find('|') != std::string::npos) {
+      //std::string new_line_begin = line_begin.substr(0, line_begin.find('|') - 1);
+      //std::string new_command = line_begin.substr(line_begin.find('|') + 1);
+      //make_pipe(new_line_begin, new_command);
+    //}
     Command cmd(command);
     execvp(cmd.cmd, cmd.params);
   } else {
