@@ -12,6 +12,7 @@
  *  [ ] pipes
  *  [ ] STDOUT and STDIN rediretion
  *  [ ] placing commands in background
+ *
  *    support for: 
  *  [x] cd
  *  [x] history
