@@ -8,8 +8,8 @@
  *  [x] machine name
  *  [x] history of commands
  *  [x] relative and absolute path
+ *  [x] pipes
  *  [ ] arrows and ! in history (readline library)
- *  [ ] pipes
  *  [ ] STDOUT and STDIN rediretion
  *  [ ] placing commands in background
  *
@@ -21,15 +21,9 @@
  *  [ ] kill(pid, SIGKILL)
  */
 
-#include <unistd.h> 
 #include <sys/wait.h>
-#include <cstdio>
-#include <cstring>
-#include <iostream>
-#include <fstream>
 #include <vector>
 #include <cassert>
-#include <string>
 
 #define NDEBUG
 #include "cmd.h"
