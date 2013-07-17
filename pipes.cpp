@@ -4,14 +4,21 @@
  * */
 #include "pipes.h"
 
-/* file descriptor - see man pipe / man dup2 */
-int fd[2] = { 0, 0 };
+#define DEBUG
 
-void make_pipe(std::string line_begin,
-               std::string command)
+
+void make_pipe(std::string command_line)
 {
-  std::cerr << "Get in make_pipe:\n" << line_begin 
-            << "#\n" << command << '\n';
+  /* file descriptor - see man pipe / man dup2 */
+  int fd[2] = { 0, 0 };
+#ifdef DEBUG
+  std::cerr << "Get in make_pipe:\n" << command_line << '\n';
+#endif
+  /* divide command_line */
+  int pipe_pos = command_line.find('|');
+  std::string rest_of_command = command_line.substr(0, pipe_pos);
+  std::string command = command_line.substr(pipe_pos + 1);
+
   pipe(fd);
   if (fork() == 0) {
     /* duplicate file descriptor to stdout */
@@ -20,12 +27,11 @@ void make_pipe(std::string line_begin,
     close(fd[PIPE_READ]);
     close(fd[PIPE_WRITE]);
     /* more pipes? */
-    //if (line_begin.find('|') != std::string::npos) {
-      //std::string new_line_begin = line_begin.substr(0, line_begin.find('|') - 1);
-      //std::string new_command = line_begin.substr(line_begin.find('|') + 1);
-      //make_pipe(new_line_begin, new_command);
-    //}
-    Command cmd(command);
+    if (rest_of_command.find('|') != std::string::npos) {
+      make_pipe(rest_of_command);
+    }
+    
+    Command cmd(rest_of_command);
     execvp(cmd.cmd, cmd.params);
   } else {
     /* duplicate file descriptor to stdin */
@@ -34,4 +40,6 @@ void make_pipe(std::string line_begin,
     close(fd[PIPE_WRITE]);
     close(fd[PIPE_READ]);
   }
+  Command cmd(command);
+  execvp(cmd.cmd, cmd.params);
 }

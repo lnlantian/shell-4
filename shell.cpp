@@ -67,16 +67,9 @@ int main(int argc, char *argv[])
 #endif
       /* code of child process */
       } else { 
-        /* ########## CRITICAL AREA ##########
-         * ##### std::length_error below ##### */
         /* if there is a pipe, split it into  */
         if (command.find('|') != std::string::npos) {
-          std::string line_begin = command.substr(0, command.find('|') - 1);
-          std::string command = command.substr(command.find('|') + 1);
-          std::cerr << "line_begin: " << line_begin << std::endl;
-          std::cerr << "command: " << command << std::endl;
-          std::ofstream log("log.txt");
-          make_pipe(line_begin, command);
+          make_pipe(command);
         } else {
 
           /* extracting command and parameters */
