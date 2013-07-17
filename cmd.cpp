@@ -3,7 +3,7 @@
  * e-mail: lukequaint@gmail.com
  * */
 #include "cmd.h"
-#define DEBUG
+#define NDEBUG
 
 void clear_line(std::string& line)
 {

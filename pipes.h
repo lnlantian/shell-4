@@ -11,6 +11,7 @@
 #define PIPES_H_
 
 #include <unistd.h>
+#include <fstream>
 #include <cstdio>
 #include <string>
 #include <iostream>
