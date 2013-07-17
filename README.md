@@ -1,5 +1,7 @@
-Author: Lukasz Hryniuk
-        lukequaint
+author: Lukasz Hryniuk
+
+e-mail: lukequaint@gmail.com
+
 
 Simple shell project - exercise from book
 "Modern Operating Systems", Andrew S.Tanenbaum
@@ -12,9 +14,9 @@ Include:
   - username, hostname check,
   - history,
   - checking and changing currend working directory
+  - pipes,
 
 TODO:
-  - pipes,
   - STDIN/STDOUT redirection,
   - !number notation for history,
   - commands in background,
