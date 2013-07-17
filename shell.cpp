@@ -31,7 +31,7 @@
 #include <cassert>
 #include <string>
 
-#define DEBUG
+#define NDEBUG
 #include "cmd.h"
 #include "host.h"
 #include "builtin.h"

@@ -4,8 +4,7 @@
  * */
 #include "pipes.h"
 
-#define DEBUG
-
+#define NDEBUG
 
 void make_pipe(std::string command_line)
 {
@@ -15,8 +14,10 @@ void make_pipe(std::string command_line)
   std::cerr << "Get in make_pipe:\n" << command_line << '\n';
 #endif
   /* divide command_line */
-  int pipe_pos = command_line.find('|');
+  int pipe_pos = command_line.rfind('|');
   std::string rest_of_command = command_line.substr(0, pipe_pos);
+  //std::ofstream log("log.txt", std::ios::app);
+  std::cout << rest_of_command << '\n';
   std::string command = command_line.substr(pipe_pos + 1);
 
   pipe(fd);
