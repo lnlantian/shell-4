@@ -8,9 +8,11 @@
  *  [x] machine name
  *  [x] history of commands
  *  [x] relative and absolute path
+ *  [ ] arrows and ! in history (readline library)
  *  [ ] pipes
  *  [ ] STDOUT and STDIN rediretion
  *  [ ] placing commands in background
+ *
  *    support for: 
  *  [x] cd
  *  [x] history
@@ -24,11 +26,12 @@
 #include <cstdio>
 #include <cstring>
 #include <iostream>
+#include <fstream>
 #include <vector>
 #include <cassert>
 #include <string>
 
-#define NDEBUG
+#define DEBUG
 #include "cmd.h"
 #include "host.h"
 #include "builtin.h"
@@ -64,26 +67,23 @@ int main(int argc, char *argv[])
 #endif
       /* code of child process */
       } else { 
-        /* ########## CRITICAL AREA ##########
-         * ##### std::length_error below ##### */
+        /* if there is a pipe, split it into  */
         if (command.find('|') != std::string::npos) {
-          std::string line_begin = command.substr(0, command.find('|') - 1);
-          std::string command = command.substr(command.find('|') + 1);
-          make_pipe(line_begin, command);
-        }
-        /* ################################### */
+          make_pipe(command);
+        } else {
 
-        /* extracting command and parameters */
-        Command cmd(command);
+          /* extracting command and parameters */
+          Command cmd(command);
 #ifdef DEBUG
-        //std::cerr << "line = " << line << '\n';
-        std::cerr << "cmd.command = " << cmd.command << '.'
-                  << "\ncmd.params_number = " << cmd.params_number << '\n';
-        printf("cmd.cmd = %s.\n", cmd.cmd);
-        printf("cmd.params[0] = %s.\n", cmd.params[0]);
+          //std::cerr << "line = " << line << '\n';
+          std::cerr << "cmd.command = " << cmd.command << '.'
+                    << "\ncmd.params_number = " << cmd.params_number << '\n';
+          printf("cmd.cmd = %s.\n", cmd.cmd);
+          printf("cmd.params[0] = %s.\n", cmd.params[0]);
 #endif
-        /* command execution */
-        execvp(cmd.cmd, cmd.params);
+          /* command execution */
+          execvp(cmd.cmd, cmd.params);
+        }
       }
     }
   }
