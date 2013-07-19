@@ -9,7 +9,8 @@
  *  [x] history of commands
  *  [x] relative and absolute path
  *  [x] pipes
- *  [ ] arrows and ! in history (readline library)
+ *  [x] arrows in history
+ *  [ ] ! in history (readline library)
  *  [ ] STDOUT and STDIN rediretion
  *  [ ] placing commands in background
  *
@@ -25,26 +26,37 @@
 #include <vector>
 #include <cassert>
 #include <cstdio>
+#include <cstdlib>
 #include <readline/readline.h>
 #include <readline/history.h>
 
-#define NDEBUG
+#define NODEBUG
 #include "cmd.h"
 #include "host.h"
 #include "builtin.h"
 #include "pipes.h"
 
-//extern std::vector<std::pair<unsigned long long, std::string> > history;
+const char* history_file = "history.txt";
 
 int main(int argc, char *argv[])
 {
-  //load_history(); /* from file history.txt */
+  read_history(history_file);
+  char* line_read = (char *)NULL;
   while (true) {
-    std::string prompt = "$ ";
-    char* line = readline(prompt.c_str());
-    std::string command(line);
+    const std::string prompt = "$ ";
+
+    /* if the buffer has already been alocated,
+     * free memory */
+    if (line_read) {
+      free(line_read);
+      line_read = (char *)NULL;
+    }
+    line_read = readline(prompt.c_str());
+    if (line_read && *line_read)
+      add_history(line_read);
+     
+    std::string command(line_read);
     clear_line(command); /* remove surrounding whitespaces */
-    //history.push_back(make_pair(new_command(), command));
     int result = check_builtin(command); /* TODO: pipes with builtins (?) */
     if (result == 0) { /* exit here! */
       break;
@@ -68,7 +80,6 @@ int main(int argc, char *argv[])
           /* extracting command and parameters */
           Command cmd(command);
 #ifdef DEBUG
-          //std::cerr << "line = " << line << '\n';
           std::cerr << "cmd.command = " << cmd.command << '.'
                     << "\ncmd.params_number = " << cmd.params_number << '\n';
           printf("cmd.cmd = %s.\n", cmd.cmd);
@@ -80,6 +91,6 @@ int main(int argc, char *argv[])
       }
     }
   }
-  //save_history();
+  write_history(history_file);
   return 0;
 }

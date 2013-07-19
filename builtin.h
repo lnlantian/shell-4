@@ -19,34 +19,7 @@
  *  help
  */
 
-const int kSavedCommands = 25;
-const std::string kHistoryFilename = "history.txt";
-
-/* return number of command and increment counter */
-unsigned long long new_command(void);
-
-/* delete saved commands*/
-void clear_history(void);
-
-/*
- * cut history vector size to kSavedCommands
- * while it's too big (queue??)
- */
-void cut_history(void);
-
-/* display queue of old commands */
-void show_history(std::ostream& out);
-
-/* read from file and write history into file */
-void load_history(void); 
-void save_history(void);
-
-/* ********************************* */
-
 int change_directory(std::string path);
-
-/* ********************************* */
-
 
 /* display list of builtins */
 void builtin_help(void);

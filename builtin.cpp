@@ -8,68 +8,14 @@
  * history part
  */
 
-/* number in history */
-unsigned long long command_number = 1;
-std::vector<std::pair<unsigned long long, std::string> > history;
-
-unsigned long long new_command()
-{
-  return command_number++;
+void show_history(void)
+{  
+  /* reading from file */
 }
 
 void clear_history(void)
 {
-  command_number = 1;
-  history.clear();
-}
-
-void cut_history(void)
-{
-  int size = history.size();
-  if (size <= kSavedCommands) return; /* no need to cut */
-  std::vector<std::pair<unsigned long long, std::string> > tmp; /* cut vector */
-  for (int i = size - kSavedCommands; i < size; ++i) {
-    tmp.push_back(history[i]);
-  }
-  history = tmp;
-}
-
-void show_history(std::ostream& out)
-{  
-  int size = history.size();
-  for (int i = std::max(size - kSavedCommands, 0); i < size; ++i) {
-    out << std::setw(3) << history[i].first << ' ' << history[i].second << '\n';
-  }
-}
-
-void load_history(void)
-{
-  std::ifstream in(kHistoryFilename.c_str());
-  unsigned long long number = 0;
-  std::string command;
-  std::string tmp;
-  std::string numstr;
-  while (getline(in, tmp)) {
-    unsigned i = 0;
-    /* get number string */
-    while ((i < tmp.size()) && (tmp[i] == ' ' || isdigit(tmp[i]))) {
-      ++i;
-    }
-    /* cut number of command */
-    numstr = tmp.substr(0, i);
-    command = tmp.substr(i);
-    std::istringstream instr(numstr); /* convert string to number */
-    instr >> number;
-    command_number = std::max(command_number, number);
-    history.push_back(make_pair(number, command));
-  }
-  command_number++; /* it will be number of next command */
-}
-
-void save_history(void)
-{
-  std::ofstream out(kHistoryFilename.c_str());
-  show_history(out);
+  /* clearing file */
 }
 
 /**
@@ -138,7 +84,7 @@ int check_builtin(std::string line)
       }
     }
     if (to_print) {
-      show_history(std::cout);
+      show_history();
     }
     return 1;
   } else if (cmd == "jobs") {
