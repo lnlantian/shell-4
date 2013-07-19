@@ -15,9 +15,9 @@ Include:
   - history,
   - checking and changing currend working directory
   - pipes,
+  - arrow-searching in history,
 
 TODO:
   - STDIN/STDOUT redirection,
   - !number notation for history,
   - commands in background,
-  - arrow-searching in history,
