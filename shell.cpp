@@ -24,6 +24,9 @@
 #include <sys/wait.h>
 #include <vector>
 #include <cassert>
+#include <cstdio>
+#include <readline/readline.h>
+#include <readline/history.h>
 
 #define NDEBUG
 #include "cmd.h"
@@ -31,21 +34,17 @@
 #include "builtin.h"
 #include "pipes.h"
 
-extern std::vector<std::pair<unsigned long long, std::string> > history;
+//extern std::vector<std::pair<unsigned long long, std::string> > history;
 
 int main(int argc, char *argv[])
 {
-  load_history(); /* from file history.txt */
+  //load_history(); /* from file history.txt */
   while (true) {
     std::string prompt = "$ ";
-    //std::string prompt = get_hostname() + ' ' + 
-                         //get_username() + '@' + 
-                         //get_cwd() + " $ ";
-    std::cout << prompt;
-    std::string command;
-    getline(std::cin, command); /* read command and parameters */
+    char* line = readline(prompt.c_str());
+    std::string command(line);
     clear_line(command); /* remove surrounding whitespaces */
-    history.push_back(make_pair(new_command(), command));
+    //history.push_back(make_pair(new_command(), command));
     int result = check_builtin(command); /* TODO: pipes with builtins (?) */
     if (result == 0) { /* exit here! */
       break;
@@ -81,6 +80,6 @@ int main(int argc, char *argv[])
       }
     }
   }
-  save_history();
+  //save_history();
   return 0;
 }

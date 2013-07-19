@@ -1,7 +1,8 @@
-FLAGS = -g # used in compilation
-SRC = $(wildcard *.cpp) # mask for source files
-OBJ = $(SRC:.cpp=.o) # object files filenames made from SRC
-NAME = shell # name of executive
+CFLAGS := -g # used in compilation
+LFLAGS := -lreadline
+SRC := $(wildcard *.cpp) # mask for source files
+OBJ := $(SRC:.cpp=.o) # object files filenames made from SRC
+NAME := shell # name of executive
 
 all: \
 	shell \
@@ -9,7 +10,7 @@ all: \
 
 # main program
 shell: $(OBJ)
-	g++ -o $(NAME) $(OBJ)
+	g++ -o $(NAME) $(OBJ) -lreadline
 
 # creating object (OBJ) files from source (SRC)
 # (inference rules)
