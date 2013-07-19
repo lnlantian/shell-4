@@ -5,4 +5,5 @@ tmp
 # Other files #
 ##############
 shell
+shell.h
 *.txt
