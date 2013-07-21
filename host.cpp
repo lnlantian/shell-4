@@ -3,6 +3,7 @@
  * e-mail: lukequaint@gmail.com
  * */
 #include "host.h"
+#include <unistd.h>
 
 std::string get_username()
 {

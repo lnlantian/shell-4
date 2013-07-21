@@ -1,14 +1,7 @@
 #ifndef BUILTIN_H_
 #define BUILTIN_H_
 
-#include <unistd.h>
-#include <iostream>
 #include <string>
-#include <vector>
-#include <utility>
-#include <iomanip>
-#include <sstream>
-#include <fstream>
 
 /*
  * built-in functions

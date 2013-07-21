@@ -3,7 +3,9 @@
  * e-mail: lukequaint@gmail.com
  * */
 #include "cmd.h"
-#define NDEBUG
+#include <iostream>
+#include <cstdio>
+#include <cstring>
 
 void clear_line(std::string& line)
 {
@@ -17,9 +19,6 @@ void clear_line(std::string& line)
 
 Command::Command(std::string line)
 {
-#ifdef DEBUG
-  std::cerr << "Creating command from line:\n" << line << '\n';
-#endif
   clear_line(line);
   /* c-string init */
   cmd = new char[kParamSize];
@@ -53,16 +52,6 @@ Command::Command(std::string line)
   }
   strcpy(cmd, command.c_str());
   params[params_number + 1] = NULL;
-#ifdef DEBUG
-  std::cerr << "NULL at index " <<  params_number + 1 << '\n';
-  /* print parameters list */
-  std::cerr << "parameters: ";
-  for (int i = 0; i <=  params_number; ++i) {
-    std::string param(params[i]);
-    std::cerr << param << ';';
-  }
-  std::cerr << '\n';
-#endif
 }
 
 Command::~Command(void)

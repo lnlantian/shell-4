@@ -22,19 +22,20 @@
  *  [ ] kill(pid, SIGKILL)
  */
 
-#include <sys/wait.h>
+#include "cmd.h"
+#include "host.h"
+#include "builtin.h"
+#include "pipes.h"
+
 #include <vector>
 #include <cassert>
 #include <cstdio>
 #include <cstdlib>
 #include <readline/readline.h>
 #include <readline/history.h>
+#include <unistd.h>
+#include <sys/wait.h>
 
-#define NODEBUG
-#include "cmd.h"
-#include "host.h"
-#include "builtin.h"
-#include "pipes.h"
 
 const char* history_file = "history.txt";
 
@@ -66,10 +67,6 @@ int main(int argc, char *argv[])
       if (pid != 0) { 
         int status = 0;
         waitpid(pid, &status, 0);
-#ifdef DEBUG
-        std::cerr << "end of child process (" << pid 
-                  << ") with status " << status << '\n';
-#endif
       /* code of child process */
       } else { 
         /* if there is a pipe, split it into  */
@@ -79,12 +76,6 @@ int main(int argc, char *argv[])
 
           /* extracting command and parameters */
           Command cmd(command);
-#ifdef DEBUG
-          std::cerr << "cmd.command = " << cmd.command << '.'
-                    << "\ncmd.params_number = " << cmd.params_number << '\n';
-          printf("cmd.cmd = %s.\n", cmd.cmd);
-          printf("cmd.params[0] = %s.\n", cmd.params[0]);
-#endif
           /* command execution */
           execvp(cmd.cmd, cmd.params);
         }

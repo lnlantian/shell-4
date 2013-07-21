@@ -2,21 +2,11 @@
  * author: Lukasz Hryniuk
  * e-mail: lukequaint@gmail.com
  * */
+
 #include "builtin.h"
-
-/**  
- * history part
- */
-
-void show_history(void)
-{  
-  /* reading from file */
-}
-
-void clear_history(void)
-{
-  /* clearing file */
-}
+#include <unistd.h>
+#include <iostream>
+#include <vector>
 
 /**
  * changing directory part
@@ -36,7 +26,7 @@ void builtin_help(void)
   std::cout << " - jobs\n";
   std::cout << " - help\n";
   std::cout << " - cd\n";
-  std::cout << " - history\n";
+  //std::cout << " - history\n";
   std::cout << " - exit\n";
 }
 
@@ -69,24 +59,24 @@ int check_builtin(std::string line)
     }
     return 1;
   
-  } else if (cmd == "history") {
-    bool to_print = true;
-    /* checking parameters */
-    for (std::vector<std::string>::iterator i = parameters.begin();
-         i != parameters.end(); ++i) {
-      if (*i == "-c") {
-        clear_history();
-#ifdef DEBUG
-        std::cerr << "History cleared!\n";
-#endif
-      } else {
-        std::cerr << "Invalid parameter: " << *i << " .\n";
-      }
-    }
-    if (to_print) {
-      show_history();
-    }
-    return 1;
+  //} else if (cmd == "history") {
+    //bool to_print = true;
+    ///* checking parameters */
+    //for (std::vector<std::string>::iterator i = parameters.begin();
+         //i != parameters.end(); ++i) {
+      //if (*i == "-c") {
+        //clear_history();
+//#ifdef DEBUG
+        //std::cerr << "History cleared!\n";
+//#endif
+      //} else {
+        //std::cerr << "Invalid parameter: " << *i << " .\n";
+      //}
+    //}
+    //if (to_print) {
+      //show_history();
+    //}
+    //return 1;
   } else if (cmd == "jobs") {
     /* background processes */
     return 1;

@@ -3,16 +3,16 @@
  * e-mail: lukequaint@gmail.com
  * */
 #include "pipes.h"
-
-#define NDEBUG
+#include "cmd.h"
+#include <unistd.h>
+#include <fstream>
+#include <cstdio>
+#include <iostream>
 
 void make_pipe(std::string command_line)
 {
   /* file descriptor - see man pipe / man dup2 */
   int fd[2] = { 0, 0 };
-#ifdef DEBUG
-  std::cerr << "Get in make_pipe:\n" << command_line << '\n';
-#endif
   /* divide command_line */
   int pipe_pos = command_line.rfind('|');
   std::string rest_of_command = command_line.substr(0, pipe_pos);

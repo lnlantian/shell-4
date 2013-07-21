@@ -5,9 +5,6 @@
 #ifndef CMD_H_
 #define CMD_H_
 
-#include <iostream>
-#include <cstdio>
-#include <cstring>
 #include <string>
 
 #define NDEBUG
