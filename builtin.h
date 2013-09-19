@@ -9,13 +9,14 @@
  *  history | !number - execute [number] command from history
  *            -1 for previous
  *  jobs
- *  help
  */
 
 int change_directory(std::string path);
 
 /* display list of builtins */
 void builtin_help(void);
+
+void usage(void);
 
 /*
  * check if command is built-in:

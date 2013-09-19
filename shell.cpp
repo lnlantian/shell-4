@@ -36,7 +36,6 @@
 #include <unistd.h>
 #include <sys/wait.h>
 
-
 const char* history_file = "history.txt";
 
 int main(int argc, char *argv[])

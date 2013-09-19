@@ -1,7 +1,4 @@
-author: Lukasz Hryniuk
-
-e-mail: lukequaint@gmail.com
-
+# shell
 
 Simple shell project - exercise from book
 "Modern Operating Systems", Andrew S.Tanenbaum
@@ -9,15 +6,18 @@ Simple shell project - exercise from book
 Based on assignment:
 http://www.cs.cornell.edu/Courses/cs414/2004su/homework/shell/shell.html
 
-Include:
+###Include:
   - executing commands with parameters
-  - username, hostname check,
   - history,
-  - checking and changing currend working directory
   - pipes,
   - arrow-searching in history,
 
-TODO:
+###TODO:
   - STDIN/STDOUT redirection,
   - !number notation for history,
   - commands in background,
+
+###Author
+name: Lukasz Hryniuk
+
+e-mail: lukequaint@gmail.com
