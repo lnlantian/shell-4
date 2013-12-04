@@ -18,6 +18,6 @@ http://www.cs.cornell.edu/Courses/cs414/2004su/homework/shell/shell.html
   - commands in background,
 
 ###Author
-name: Lukasz Hryniuk
+Lukasz Hryniuk
 
-e-mail: lukequaint@gmail.com
+lukequaint@gmail.com
