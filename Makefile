@@ -1,4 +1,5 @@
-CFLAGS := -g # used in compilation
+COMP := g++
+CFLAGS := -g --std=c++11 # used in compilation
 LFLAGS := -lreadline
 SRC := $(wildcard *.cpp) # mask for source files
 OBJ := $(SRC:.cpp=.o) # object files filenames made from SRC
@@ -10,7 +11,7 @@ all: \
 
 # main program
 shell: $(OBJ)
-	g++ -o $(NAME) $(OBJ) -lreadline
+	$(COMP) -o $(NAME) $(OBJ) $(LFLAGS)
 
 # creating object (OBJ) files from source (SRC)
 # (inference rules)
@@ -18,7 +19,7 @@ shell: $(OBJ)
 # $< - first dependency name
 # $@ - output filename
 %.o: %.cpp
-	g++ -o $@ -c $< $(FLAGS)
+	$(COMP) -o $@ -c $< $(CFLAGS)
 
 # after compilation cleaning
 clean:

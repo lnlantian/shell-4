@@ -10,14 +10,14 @@ http://www.cs.cornell.edu/Courses/cs414/2004su/homework/shell/shell.html
   - executing commands with parameters
   - history,
   - pipes,
-  - arrow-searching in history,
+  - arrow-searching in history
 
 ###TODO:
   - STDIN/STDOUT redirection,
   - !number notation for history,
-  - commands in background,
+  - commands in background
 
 ###Author
-Lukasz Hryniuk
+Lukasz Hryniuk (lukequaint)
 
-lukequaint@gmail.com
+lukasz.hryniuk@wp.pl

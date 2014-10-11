@@ -46,7 +46,7 @@ void usage(void)
 
 int check_builtin(std::string line)
 {
-  int space = 0;
+  size_t space = 0;
   std::string cmd = line;
   std::vector<std::string> parameters; /* built-in params */
   /* extract parameter and erase it from line */

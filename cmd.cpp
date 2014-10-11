@@ -30,7 +30,7 @@ Command::Command(std::string line)
     params[i] = new char[kParamSize];
   }
 
-  int split_index = line.find(' ');
+  auto split_index = line.find(' ');
   /* command only */
   if (split_index == std::string::npos) {
     command = line;
