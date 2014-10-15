@@ -1,7 +1,4 @@
 /*
- * author: Lukasz Hryniuk
- * e-mail: lukequaint@gmail.com
- *
  * features:
  *  [x] username
  *  [x] current working directory
@@ -27,20 +24,21 @@
 #include "builtin.h"
 #include "pipes.h"
 
-#include <vector>
 #include <cassert>
 #include <cstdio>
 #include <cstdlib>
+#include <vector>
+
 #include <readline/readline.h>
 #include <readline/history.h>
 #include <unistd.h>
 #include <sys/wait.h>
 
-const char* history_file = "history.txt";
+const std::string history_file = "history.txt";
 
 int main(int argc, char *argv[])
 {
-  read_history(history_file);
+  read_history(history_file.c_str());
   char* line_read = (char *)NULL;
   while (true) {
     const std::string prompt = "$ ";
@@ -81,6 +79,6 @@ int main(int argc, char *argv[])
       }
     }
   }
-  write_history(history_file);
+  write_history(history_file.c_str());
   return 0;
 }

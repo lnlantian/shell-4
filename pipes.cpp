@@ -9,13 +9,13 @@
 #include <cstdio>
 #include <iostream>
 
-void make_pipe(std::string command_line)
+void make_pipe(const std::string& command_line)
 {
   /* file descriptor - see man pipe / man dup2 */
   int fd[2] = { 0, 0 };
   /* divide command_line */
   int pipe_pos = command_line.rfind('|');
-  std::string rest_of_command = command_line.substr(0, pipe_pos);
+  const std::string rest_of_command = command_line.substr(0, pipe_pos);
   //std::ofstream log("log.txt", std::ios::app);
   std::cout << rest_of_command << '\n';
   std::string command = command_line.substr(pipe_pos + 1);

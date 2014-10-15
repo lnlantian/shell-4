@@ -21,13 +21,13 @@ Command::Command(std::string line)
 {
   clear_line(line);
   /* c-string init */
-  cmd = new char[kParamSize];
+  cmd = new char[k_param_size];
 
   /* params array init */
   params_number = 0;
-  params = new char*[kParamSize];
-  for (int i = 0; i < kParamSize; ++i) {
-    params[i] = new char[kParamSize];
+  params = new char*[k_param_size];
+  for (int i = 0; i < k_param_size; ++i) {
+    params[i] = new char[k_param_size];
   }
 
   auto split_index = line.find(' ');
@@ -42,7 +42,7 @@ Command::Command(std::string line)
     /* setting parameters */
     while (!line.empty() 
         && (line.find(' ') != std::string::npos)
-        && params_number < kParamSize) {
+        && params_number < k_param_size) {
       split_index = line.find(' ');
       strcpy(params[params_number], line.substr(0, split_index).c_str());
       line = line.substr(split_index + 1);
@@ -51,16 +51,16 @@ Command::Command(std::string line)
     strcpy(params[params_number], line.c_str());
   }
   strcpy(cmd, command.c_str());
-  params[params_number + 1] = NULL;
+  params[params_number + 1] = nullptr;
 }
 
 Command::~Command(void)
 {
-  for (int i = 0; i < kParamSize; ++i) {
+  for (int i = 0; i < k_param_size; ++i) {
     delete[] params[i];
   }
   delete[] params;
-  params = NULL;
+  params = nullptr;
   delete[] cmd;
-  cmd = NULL;
+  cmd = nullptr;
 }

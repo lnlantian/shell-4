@@ -1,10 +1,9 @@
-/*
- * author: Lukasz Hryniuk
- * e-mail: lukequaint@gmail.com
- * */
-
 #include "builtin.h"
+
+extern "C" {
 #include <unistd.h>
+}
+
 #include <iostream>
 #include <vector>
 

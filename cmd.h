@@ -9,7 +9,7 @@
 
 #define NDEBUG
 
-const int kParamSize = 120;
+const int k_param_size = 120;
 
 struct Command
 {
