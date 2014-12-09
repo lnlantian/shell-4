@@ -12,11 +12,6 @@ http://www.cs.cornell.edu/Courses/cs414/2004su/homework/shell/shell.html
   - pipes,
   - arrow-searching in history
 
-###TODO:
-  - STDIN/STDOUT redirection,
-  - !number notation for history,
-  - commands in background
-
 ###Author
 Lukasz Hryniuk (lukequaint)
 
