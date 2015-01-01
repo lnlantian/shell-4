@@ -15,4 +15,4 @@ http://www.cs.cornell.edu/Courses/cs414/2004su/homework/shell/shell.html
 ###Author
 Lukasz Hryniuk (lukequaint)
 
-lukasz.hryniuk@wp.pl
+lukasz.hryniuk at wp.pl
