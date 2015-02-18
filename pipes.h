@@ -1,12 +1,3 @@
-/*
- * author: Lukasz Hryniuk
- * e-mail: lukequaint@gmail.com
- * */
-/*
- * http://matthewkwong.blogspot.com/2010/10/writing-your-own-shell-stuck-on-pipes.html
- * http://www.cse.ohio-state.edu/~mamrak/CIS762/pipes_lab_notes.html
- */
-
 #ifndef PIPES_H_
 #define PIPES_H_
 

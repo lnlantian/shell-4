@@ -1,8 +1,3 @@
-/*
- * author: Lukasz Hryniuk
- * e-mail: lukequaint@gmail.com
- * */
-
 #include "builtin.h"
 #include <unistd.h>
 #include <iostream>

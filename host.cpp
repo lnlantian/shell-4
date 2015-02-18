@@ -1,7 +1,3 @@
-/*
- * author: Lukasz Hryniuk
- * e-mail: lukequaint@gmail.com
- * */
 #include "host.h"
 #include <unistd.h>
 
@@ -15,7 +11,7 @@ std::string get_username()
   }
 }
 
-std::string get_cwd() // current working directory
+std::string get_cwd()
 {
   char* cwd = get_current_dir_name();
   if (cwd != NULL) {

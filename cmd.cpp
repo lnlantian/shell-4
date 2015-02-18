@@ -1,7 +1,3 @@
-/*
- * author: Lukasz Hryniuk
- * e-mail: lukequaint@gmail.com
- * */
 #include "cmd.h"
 #include <iostream>
 #include <cstdio>

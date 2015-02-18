@@ -1,7 +1,3 @@
-/*
- * author: Lukasz Hryniuk
- * e-mail: lukequaint@gmail.com
- * */
 #ifndef CMD_H_
 #define CMD_H_
 
@@ -21,7 +17,6 @@ struct Command
   ~Command(void);
 };
 
-/* remove whitespace from command */
 void clear_line(std::string& line);
 
 /*

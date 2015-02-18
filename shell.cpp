@@ -1,26 +1,3 @@
-/*
- * author: Lukasz Hryniuk
- * e-mail: lukequaint@gmail.com
- *
- * features:
- *  [x] username
- *  [x] current working directory
- *  [x] machine name
- *  [x] history of commands
- *  [x] relative and absolute path
- *  [x] pipes
- *  [x] arrows in history
- *  [ ] ! in history (readline library)
- *  [ ] STDOUT and STDIN rediretion
- *  [ ] placing commands in background
- *
- *    support for: 
- *  [x] cd
- *  [x] history
- *  [x] exit
- *  [ ] jobs, 
- *  [ ] kill(pid, SIGKILL)
- */
 
 #include "cmd.h"
 #include "host.h"
@@ -45,8 +22,6 @@ int main(int argc, char *argv[])
   while (true) {
     const std::string prompt = "$ ";
 
-    /* if the buffer has already been alocated,
-     * free memory */
     if (line_read) {
       free(line_read);
       line_read = (char *)NULL;
@@ -56,31 +31,28 @@ int main(int argc, char *argv[])
       add_history(line_read);
      
     std::string command(line_read);
-    clear_line(command); /* remove surrounding whitespaces */
-    int result = check_builtin(command); /* TODO: pipes with builtins (?) */
-    if (result == 0) { /* exit here! */
+    clear_line(command);
+    int result = check_builtin(command);
+    if (result == 0) {
       break;
     } else if (result == -1) { /* command is not builtin */
-      pid_t pid = fork(); /* pid of child process */
+      pid_t pid = fork();
       /* code of parent process */
       if (pid != 0) { 
         int status = 0;
         waitpid(pid, &status, 0);
       /* code of child process */
       } else { 
-        /* if there is a pipe, split it into  */
         if (command.find('|') != std::string::npos) {
           make_pipe(command);
         } else {
-
-          /* extracting command and parameters */
           Command cmd(command);
-          /* command execution */
           execvp(cmd.cmd, cmd.params);
         }
       }
     }
   }
   write_history(history_file);
+  free(line_read);
   return 0;
 }
