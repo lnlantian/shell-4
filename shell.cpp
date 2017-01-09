@@ -21,15 +21,13 @@ int main(int argc, char *argv[])
   char* line_read = (char *)NULL;
   while (true) {
     const std::string prompt = "$ ";
-
     if (line_read) {
       free(line_read);
       line_read = (char *)NULL;
     }
     line_read = readline(prompt.c_str());
     if (line_read && *line_read)
-      add_history(line_read);
-     
+      add_history(line_read); 
     std::string command(line_read);
     clear_line(command);
     int result = check_builtin(command);
